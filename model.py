@@ -267,5 +267,5 @@ def compare_faiss_to_numpy(query_vector, chunk_matrix, index, k):
 
     _, fa_inds = faiss_search(index, query_vector, k)
 
-    return np_inds == fa_inds
+    return all(np_inds == fa_inds)
 
