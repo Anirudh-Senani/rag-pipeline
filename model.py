@@ -222,3 +222,11 @@ def top_k_chunks(scores, chunks, k):
     inds = top_k_indices(scores, k)
     return [(chunks[i], float(scores[i])) for i in inds]
 
+# Step 19 - retrieve
+def retrieve(query, model, chunk_matrix, chunks, k):
+    # TODO: embed the query, score it against chunk_matrix, return top-k (chunk, score) pairs.
+    qvec = embed_text(model, query)
+    scores = cosine_similarity_search(qvec, chunk_matrix)
+
+    return top_k_chunks(scores, chunks, k)
+
