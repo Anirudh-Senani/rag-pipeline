@@ -15,3 +15,13 @@ def load_text_file(path):
 
     return text
 
+# Step 2 - load_text_directory
+def load_text_directory(directory):
+    # TODO: read every .txt file in `directory` and return their contents as a list of strings
+    contents = []
+    for fn in sorted(os.listdir(directory)):
+        if fn.endswith('.txt'):
+            contents.append(load_text_file(os.path.join(directory, fn)))
+
+    return contents
+
