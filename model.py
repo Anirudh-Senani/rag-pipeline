@@ -230,3 +230,11 @@ def retrieve(query, model, chunk_matrix, chunks, k):
 
     return top_k_chunks(scores, chunks, k)
 
+# Step 20 - build_faiss_index
+def build_faiss_index(chunk_matrix):
+    # TODO: build a FAISS inner-product index and add all rows of chunk_matrix to it
+    ind = faiss.IndexFlatIP(chunk_matrix.shape[-1])
+    ind.add(chunk_matrix)
+
+    return ind
+
