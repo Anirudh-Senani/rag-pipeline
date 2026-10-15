@@ -269,3 +269,11 @@ def compare_faiss_to_numpy(query_vector, chunk_matrix, index, k):
 
     return all(np_inds == fa_inds)
 
+# Step 23 - save_faiss_index
+def save_faiss_index(index, path):
+    """Write `index` to `path` and return the index loaded back from disk."""
+    # TODO: persist the index to `path` and reload it; return the reloaded index
+    faiss.write_index(index, path)
+    reload_ind = faiss.read_index(path)
+    return reload_ind
+
