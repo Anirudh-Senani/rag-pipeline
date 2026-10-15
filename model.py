@@ -277,3 +277,8 @@ def save_faiss_index(index, path):
     reload_ind = faiss.read_index(path)
     return reload_ind
 
+# Step 24 - build_prompt_template
+def build_prompt_template():
+    # TODO: return a RAG prompt template string with {context} and {question} placeholders.
+    return "{context}\n{question}"
+
