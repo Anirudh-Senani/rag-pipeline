@@ -282,3 +282,8 @@ def build_prompt_template():
     # TODO: return a RAG prompt template string with {context} and {question} placeholders.
     return "{context}\n{question}"
 
+# Step 25 - format_context
+def format_context(retrieved):
+    # TODO: render each (chunk, score) as '[i] {text} (source={source})' and join with newlines
+    return "\n".join([f"""[{i}] {chunk["text"]} (source={chunk["source"]})""" for i, (chunk, _) in enumerate(retrieved, 1)])
+
