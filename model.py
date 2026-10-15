@@ -137,3 +137,11 @@ def attach_chunk_metadata(chunks, source):
     # TODO: wrap each chunk string with source, position, and chunk_id metadata.
     return [dict(text=text,source=source,position=i,chunk_id=f"{source}::{i}") for i, text in enumerate(chunks)]
 
+# Step 11 - load_embedding_model
+from sentence_transformers import SentenceTransformer
+
+
+def load_embedding_model(model_name):
+    # TODO: return a sentence-transformers model instance for the given model_name.
+    return SentenceTransformer(model_name)
+
