@@ -68,3 +68,12 @@ def normalize_text(text):
     # TODO: NFKC-normalize the text and collapse runs of whitespace into single spaces.
     return " ".join(unicodedata.normalize("NFKC", text).split())
 
+# Step 5 - make_document
+def make_document(text, source, title):
+    # TODO: wrap text with source and title metadata into a document dict.
+    return dict(
+        text=text,
+        source=source,
+        title=title
+    )
+
