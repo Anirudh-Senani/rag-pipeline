@@ -25,3 +25,38 @@ def load_text_directory(directory):
 
     return contents
 
+# Step 3 - extract_text_from_html
+from html.parser import HTMLParser
+
+
+class Parser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.text_blocks = []
+        self.skip_tags = {"script", "head", "style", "title", "meta", "[document]"}
+        self.current_tag = None
+
+
+    def handle_starttag(self, tag, attrs):
+        self.current_tag = tag.lower()
+
+
+    def handle_endtag(self, tag):
+        self.current_tag = None
+
+
+    def handle_data(self, data):
+        if self.current_tag not in self.skip_tags:
+            self.text_blocks.append(data)
+
+
+    def get_text(self):
+        return "".join(self.text_blocks)
+
+
+def extract_text_from_html(html):
+    # TODO: strip HTML tags and return only the visible text content
+    parser = Parser()
+    parser.feed(html)
+    return parser.get_text()
+
