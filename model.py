@@ -123,3 +123,12 @@ def chunk_by_sentences(text, max_chars):
         sent_chunks.append(chunk)
     return sent_chunks
 
+# Step 9 - chunk_with_overlap
+def chunk_with_overlap(text, chunk_size, overlap):
+    # TODO: return sliding-window chunks of length chunk_size sharing `overlap` chars
+    chunks = []
+    for i in range(0, len(text), max(chunk_size - overlap, 1)):
+        chunks.append(text[i:i+chunk_size])
+
+    return chunks
+
