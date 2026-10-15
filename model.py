@@ -96,3 +96,30 @@ def chunk_by_tokens(text, tokenizer, max_tokens):
 
     return [tokenizer.decode(chunk) for chunk in token_chunks]
 
+# Step 8 - chunk_by_sentences
+import re
+
+
+def chunk_by_sentences(text, max_chars):
+    # TODO: split text on .!? boundaries and greedily pack whole sentences under max_chars.
+    sents = re.split(r"(?<=[.!?])\s+", text)
+    sent_chunks = []
+    if not sents:
+        return sent_chunks
+
+    i = 1
+    chunk = sents[0].strip()
+    while i < len(sents):
+        if len(chunk) + len(sents[i]) + 1 <= max_chars:
+            chunk += " " + sents[i]
+            chunk = chunk.strip()
+        else:
+            sent_chunks.append(chunk)
+            chunk = sents[i]
+
+        i += 1
+
+    if chunk:
+        sent_chunks.append(chunk)
+    return sent_chunks
+
