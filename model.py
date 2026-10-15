@@ -145,3 +145,8 @@ def load_embedding_model(model_name):
     # TODO: return a sentence-transformers model instance for the given model_name.
     return SentenceTransformer(model_name)
 
+# Step 12 - embed_text
+def embed_text(model, text):
+    # TODO: Return a 1D float32 numpy embedding vector for the given text string.
+    return model.encode(text)
+
