@@ -214,3 +214,11 @@ def top_k_indices(scores, k):
     # TODO: rank the score array and return the top-k positions as a numpy array
     return np.argsort(-scores)[:k]
 
+# Step 18 - top_k_chunks
+import numpy as np
+
+def top_k_chunks(scores, chunks, k):
+    # TODO: return list of (chunk, score) tuples for the top-k scores, sorted descending
+    inds = top_k_indices(scores, k)
+    return [(chunks[i], float(scores[i])) for i in inds]
+
