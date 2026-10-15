@@ -172,3 +172,26 @@ def l2_normalize(matrix):
 
     return matrix/norms
 
+# Step 15 - save_corpus
+import os, json
+
+
+def save_corpus(embeddings, chunks, directory):
+    # TODO: persist embeddings (.npy) and chunks (.json) into directory, then reload and return both.
+    os.makedirs(directory, exist_ok=True)
+    emb_file = os.path.join(directory, "embeddings.npy")
+    np.save(emb_file, embeddings)
+
+    js_file = os.path.join(directory, "chunks.json")
+    with open(js_file, "w+") as fp:
+        json.dump(chunks, fp, indent=4)
+
+    reload_emb = np.load(emb_file)
+    with open(js_file, "r+") as fp:
+        reload_chunks = json.load(fp)
+
+    return dict(
+        embeddings=reload_emb,
+        chunks=reload_chunks
+    )
+
