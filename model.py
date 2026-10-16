@@ -305,3 +305,9 @@ def truncate_context(context, max_chars):
 
     return " ".join(words[:i])
 
+# Step 27 - add_system_instruction
+def add_system_instruction(prompt):
+    """Prepend a fixed system instruction to the prompt."""
+    # TODO: return a string that starts with a system instruction telling the model to use only the context
+    return "You are a helpful assistant. Answer the question using ONLY the provided context. If the answer is not in the context, say 'I do not know'.\n\n" + prompt
+
