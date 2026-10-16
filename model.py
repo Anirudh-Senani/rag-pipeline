@@ -303,8 +303,5 @@ def truncate_context(context, max_chars):
             break
         i += 1
 
-    # if i == len(words)-1:
-    #     i += 1
-
     return " ".join(words[:i])
 
