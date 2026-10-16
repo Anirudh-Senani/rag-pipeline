@@ -385,3 +385,8 @@ def rag_answer(query, chunks, embeddings, embed_model, generator, tokenizer, k=3
         query=query
     )
 
+# Step 31 - track_source_chunk_ids
+def track_source_chunk_ids(source_chunks):
+    # TODO: return the list of chunk ids from the retrieved source chunks, preserving order
+    return [chunk['id'] for chunk in source_chunks if 'id' in chunk]
+
