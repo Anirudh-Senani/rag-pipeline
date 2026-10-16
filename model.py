@@ -326,3 +326,34 @@ def load_generator(model_name='sshleifer/tiny-gpt2'):
 
     return model, tokenizer
 
+# Step 29 - generate_answer
+import torch
+
+
+def generate_answer(model, tokenizer, prompt, max_new_tokens=32):
+    # TODO: greedy-decode a continuation from `prompt` and return only the new tokens as a string.
+    # new_tokens = []
+    inputs = tokenizer(prompt, return_tensors="pt")
+    input_ids = inputs['input_ids']
+
+    outputs = model.generate(
+        **inputs,
+        do_sample=False,
+        max_length=len(inputs['input_ids']) + max_new_tokens
+    )
+
+    # with torch.no_grad():
+    #     for _ in range(max_new_tokens):
+    #         logits = model(input_ids).logits[:, -1]
+    #         next_id = torch.argmax(logits, dim=-1, keepdim=True)
+    #         new_tokens.append(next_id[0])
+    #         input_ids = torch.cat([input_ids, next_id], dim=-1)
+
+    #         if next_id == tokenizer.eos_token_id:
+    #             break
+
+    decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+    decoded = decoded.replace(prompt, "").strip()
+
+    return decoded
+
