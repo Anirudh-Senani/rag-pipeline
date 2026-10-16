@@ -398,3 +398,23 @@ def append_source_references(answer_text, source_chunks):
 
     return answer_text + source_chunk_ids
 
+# Step 33 - query_rewrite
+def query_rewrite(raw_query):
+    # TODO: clean and normalize a raw user query into a better search query
+    query = normalize_text(raw_query.lower())
+
+    for filler in ('please', 'could you', 'can you', 'tell me', 'i want to know'):
+        query = query.replace(filler, "")
+
+    query = query.strip()
+    while len(query) and query[-1] in '?.!':
+        query = query[:-1]
+    # s = 0
+    # e = len(query)
+    # while s < e:
+    #     if query[s] in [',?!.;-']:
+    #         s += 1
+    #     if query[e] in ['']
+
+    return query
+
