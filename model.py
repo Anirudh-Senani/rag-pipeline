@@ -328,6 +328,7 @@ def load_generator(model_name='sshleifer/tiny-gpt2'):
 
 # Step 29 - generate_answer
 import torch
+from transformers import AutoModel
 
 
 def generate_answer(model, tokenizer, prompt, max_new_tokens=32):
@@ -336,11 +337,19 @@ def generate_answer(model, tokenizer, prompt, max_new_tokens=32):
     inputs = tokenizer(prompt, return_tensors="pt")
     input_ids = inputs['input_ids']
 
-    outputs = model.generate(
-        **inputs,
-        do_sample=False,
-        max_length=len(inputs['input_ids']) + max_new_tokens
-    )
+    if isinstance(model, AutoModel):
+        outputs = model.generate(
+            **inputs,
+            do_sample=False,
+            max_length=len(inputs['input_ids']) + max_new_tokens
+        )
+    else:
+        outputs = model.generate(
+            **inputs,
+            do_sample=False,
+            # max_length=len(inputs['input_ids']) + max_new_tokens
+            max_new_tokens=max_new_tokens
+        )
 
     # with torch.no_grad():
     #     for _ in range(max_new_tokens):
@@ -356,4 +365,20 @@ def generate_answer(model, tokenizer, prompt, max_new_tokens=32):
     decoded = decoded.replace(prompt, "").strip()
 
     return decoded
+
+# Step 30 - rag_answer
+def rag_answer(query, chunks, embeddings, embed_model, generator, tokenizer, k=3):
+    # TODO: embed query, retrieve top-k chunks, build prompt, generate answer, return dict.
+    retrieved = retrieve(query, embed_model, embeddings, chunks, k)
+    context = format_context(retrieved)
+
+    sources = [chunk for chunk, _ in retrieved]
+    prompt = build_prompt_template().format(context=context, question=query)
+    answer = generate_answer(generator, tokenizer, prompt)
+
+    return dict(
+        answer=answer,
+        sources=sources,
+        query=query
+    )
 
