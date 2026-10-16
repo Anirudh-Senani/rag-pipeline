@@ -412,3 +412,9 @@ def query_rewrite(raw_query):
 
     return query
 
+# Step 34 - hyde_retrieve
+def hyde_retrieve(query, hypothetical_answer, chunks, embeddings, embed_model, k=5):
+    # TODO: embed the hypothetical answer and return the top-k chunks by cosine similarity.
+    retrieved = retrieve(hypothetical_answer, embed_model, embeddings, chunks, k)
+    return [chunk for chunk, _ in retrieved]
+
