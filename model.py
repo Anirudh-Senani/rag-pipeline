@@ -390,3 +390,11 @@ def track_source_chunk_ids(source_chunks):
     # TODO: return the list of chunk ids from the retrieved source chunks, preserving order
     return [chunk['id'] for chunk in source_chunks if 'id' in chunk]
 
+# Step 32 - append_source_references
+def append_source_references(answer_text, source_chunks):
+    # TODO: append a 'Sources: [id1, id2, ...]' line to answer_text using the source chunk ids
+    source_chunk_ids = ", ".join(list(map(str, track_source_chunk_ids(source_chunks))))
+    source_chunk_ids = "\nSources: [" + source_chunk_ids + "]"
+
+    return answer_text + source_chunk_ids
+
