@@ -287,3 +287,24 @@ def format_context(retrieved):
     # TODO: render each (chunk, score) as '[i] {text} (source={source})' and join with newlines
     return "\n".join([f"""[{i}] {chunk["text"]} (source={chunk["source"]})""" for i, (chunk, _) in enumerate(retrieved, 1)])
 
+# Step 26 - truncate_context
+def truncate_context(context, max_chars):
+    # TODO: trim context so len(result) <= max_chars, preferring a whitespace boundary
+    words = context.split()
+    cur_len = 0
+    nwords = len(words)
+    if nwords == 1:
+        return context[:max_chars]
+
+    i = 0
+    while i < nwords:
+        cur_len += len(words[i])
+        if cur_len + i > max_chars:
+            break
+        i += 1
+
+    # if i == len(words)-1:
+    #     i += 1
+
+    return " ".join(words[:i])
+
