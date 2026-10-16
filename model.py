@@ -361,7 +361,10 @@ def generate_answer(model, tokenizer, prompt, max_new_tokens=32):
     #         if next_id == tokenizer.eos_token_id:
     #             break
 
-    decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+    if isinstance(tokenizer, AutoTokenizer):
+        decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+    else:
+        decoded = tokenizer.decode(outputs, skip_special_tokens=True)[0]
     decoded = decoded.replace(prompt, "").strip()
 
     return decoded
