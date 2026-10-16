@@ -409,12 +409,6 @@ def query_rewrite(raw_query):
     query = query.strip()
     while len(query) and query[-1] in '?.!':
         query = query[:-1]
-    # s = 0
-    # e = len(query)
-    # while s < e:
-    #     if query[s] in [',?!.;-']:
-    #         s += 1
-    #     if query[e] in ['']
 
     return query
 
