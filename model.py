@@ -428,3 +428,37 @@ def reciprocal_rank_fusion(ranked_lists, k=60):
 
     return [(key, fusion[key]) for key in sorted(fusion, key=fusion.get, reverse=True)]
 
+# Step 36 - bm25_search
+import math
+
+
+def bm25_search(query, chunks, k=5, k1=1.5, b=0.75):
+    # TODO: score chunks against the query with BM25 and return top-k (index, score) pairs
+    lens = [len(chunk['text'].split()) for chunk in chunks]
+    N = len(chunks)
+    dl = sum(lens)/N
+    words = query.split()
+    words = [word for i, word in enumerate(words) if word not in words[:i]]
+    df = {}
+    tf = [[0] * N for _ in range(len(words))]
+
+    for d, chunk in enumerate(chunks):
+        chunk_words = chunk['text'].split()
+        for t, w in enumerate(words):
+            if w in chunk_words:
+                df[w] = df.get(w, 0) + 1
+            tf[t][d] += chunk_words.count(w)
+
+    idf = {w: math.log(((N-v+0.5)/(v+0.5)) + 1) for w, v in df.items()}
+    scores = []
+    for d in range(len(lens)):
+        score = 0.0
+        for t, w in enumerate(words):
+            tfi = (tf[t][d] * (k1 + 1))/(tf[t][d] + k1*(1 - b + b*lens[d]/dl))
+            score += idf.get(w, 0.0) * tfi
+        scores.append(score)
+
+    top_k_inds = sorted(range(N), key=lambda x: scores[x], reverse=True)[:k]
+
+    return [(i, scores[i]) for i in top_k_inds if scores[i]>0.0]
+
