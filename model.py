@@ -462,3 +462,38 @@ def bm25_search(query, chunks, k=5, k1=1.5, b=0.75):
 
     return [(i, scores[i]) for i in top_k_inds if scores[i]>0.0]
 
+# Step 37 - hybrid_search
+def hybrid_search(query, chunks, embeddings, embed_model, alpha=0.5, k=5):
+    # TODO: blend normalized dense cosine scores with BM25 scores and return the top-k (idx, score) pairs.
+    qvec = embed_text(embed_model, query)
+    dense = cosine_similarity_search(qvec, embeddings)
+
+    d_min = dense.min()
+    d_max = dense.max()
+    if d_min == d_max and d_max == 0.0:
+        dense = np.zeros_like(dense)
+    elif d_min == d_max and d_max != 0.0:
+        dense = np.ones_likes(dense)
+    else:
+        dense = (dense - d_min)/(d_max - d_min)
+
+    bm25_scores = bm25_search(query, chunks, k=len(chunks))
+    bm25 = [0.0]*len(dense)
+    for i, s in bm25_scores:
+        bm25[i] = s
+    bm25 = np.asarray(bm25)
+
+    b_min = bm25.min()
+    b_max = bm25.max()
+    if b_min == b_max and b_max == 0.0:
+        bm25 = np.zeros_like(bm25)
+    elif b_min == b_max and b_max != 0.0:
+        bm25 = np.ones_like(bm25)
+    else:
+        bm25 = (bm25 - b_min)/(b_max - b_min)
+
+    blend = alpha * dense + (1-alpha) * bm25
+    inds = np.argsort(-blend)[:k].tolist()
+
+    return [(ind, float(blend[ind])) for ind in inds]
+
