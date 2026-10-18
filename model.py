@@ -618,3 +618,14 @@ def faithfulness_score(answer, context_chunks):
 
     return common/len(answer_norm)
 
+# Step 46 - relevance_score
+def relevance_score(answer, question):
+    # TODO: return token-overlap (Jaccard) similarity between answer and question in [0, 1]
+    if not answer:
+        return 0.0
+
+    answer = set(query_rewrite(answer).split())
+    question = set(query_rewrite(question).split())
+
+    return len(answer & question)/(len(answer | question))
+
