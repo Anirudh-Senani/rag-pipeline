@@ -600,3 +600,21 @@ def mean_reciprocal_rank(retrieved_ids_per_query, relevant_ids_per_query):
 
     return sum(rr)/len(retrieved_ids_per_query)
 
+# Step 45 - faithfulness_score
+def faithfulness_score(answer, context_chunks):
+    # TODO: return the fraction of answer tokens that appear in the context text
+    if not answer:
+        return 0.0
+
+    concat_context = " ".join([f"""{chunk["text"]})""" for chunk in context_chunks])
+    concat_context = normalize_text(concat_context.lower())
+    answer_norm = normalize_text(answer.lower()).split()
+    context = set(concat_context.split())
+
+    common = 0
+    for tok in answer_norm:
+        if tok in context:
+            common += 1
+
+    return common/len(answer_norm)
+
