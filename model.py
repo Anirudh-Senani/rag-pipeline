@@ -543,22 +543,22 @@ def build_eval_set():
         {
             'question' : 'What is RAG?',
             'answer' : 'Retrieval-Augmented Generation combines a retriever with a generator.',
-            'relevant_ids': ['c1', 'c2']
+            'relevant_ids' : ['c1', 'c2']
         },
         {
             'question' : 'What does FAISS do?',
             'answer' : 'FAISS performs fast nearest-neighbor search over dense vectors.',
-            'relevant_ids': ['c3']
+            'relevant_ids' : ['c3']
         },
         {
             'question' : 'Why normalize embeddings?',
             'answer' : 'So that inner products equal cosine similarities.',
-            'relevant_ids': ['c4', 'c5']
+            'relevant_ids' : ['c4', 'c5']
         },
         {
             'question' : 'What is BM25?',
             'answer' : 'A lexical ranking function based on term frequency and document length.',
-            'relevant_ids': ['c6']
+            'relevant_ids' : ['c6']
         }
     ]
 
