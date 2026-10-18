@@ -577,3 +577,26 @@ def recall_at_k(retrieved_ids_per_query, relevant_ids_per_query, k):
         return 0.0
     return sum([len(set(ret[:k])&set(rel))/len(rel) for ret, rel in zip(retrieved_ids_per_query, relevant_ids_per_query) if len(rel) > 0])/len(retrieved_ids_per_query)
 
+# Step 44 - mean_reciprocal_rank
+def mean_reciprocal_rank(retrieved_ids_per_query, relevant_ids_per_query):
+    # TODO: average the reciprocal rank of the first relevant id across queries
+    if not retrieved_ids_per_query:
+        return 0.0
+
+    rr = []
+    for ret, rel in zip(retrieved_ids_per_query, relevant_ids_per_query):
+        for i in range(len(ret)):
+            rel_ind = -1
+            if ret[i] in rel:
+                rel_ind = i
+                break
+
+        if rel_ind == -1:
+            rel_ind = 0
+        else:
+            rel_ind = 1/(rel_ind + 1)
+
+        rr.append(rel_ind)
+
+    return sum(rr)/len(retrieved_ids_per_query)
+
