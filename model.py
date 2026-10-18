@@ -507,3 +507,27 @@ def rerank_cross_encoder(query, candidate_chunks, cross_encoder):
     inds = sorted(range(len(candidate_chunks)), key=lambda x: -scores[x])
     return [candidate_chunks[ind] for ind in inds]
 
+# Step 39 - maximal_marginal_relevance
+def maximal_marginal_relevance(query_embedding, candidate_embeddings, k=5, lambda_param=0.5):
+    # TODO: greedily pick indices balancing query relevance and diversity from already-selected items.
+    n = len(candidate_embeddings)
+    k = min(k, n)
+    qvec = l2_normalize(query_embedding)
+    ssim = candidate_embeddings @ candidate_embeddings.T
+
+    s = []
+    s_inds = list(range(n))
+    for _ in range(k):
+        if not s:
+            i = np.argmax(lambda_param * (candidate_embeddings[s_inds] * qvec[None, :]).sum(axis=-1))
+
+        else:
+            ri = lambda_param * (candidate_embeddings[s_inds] * qvec[None, :]).sum(axis=-1)
+            sij = (1 - lambda_param) * (ssim[s_inds][:, s]).max(axis=-1)
+            i = np.argmax(ri - sij)
+
+        s.append(s_inds[i])
+        s_inds.pop(i)
+
+    return s
+
