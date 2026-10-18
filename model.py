@@ -570,3 +570,8 @@ def hit_rate_at_k(retrieved_ids_per_query, relevant_ids_per_query, k):
 
     return sum([int(len(set(ret[:k])&set(rel))>0) for ret, rel in zip(retrieved_ids_per_query, relevant_ids_per_query)])/len(retrieved_ids_per_query)
 
+# Step 43 - recall_at_k
+def recall_at_k(retrieved_ids_per_query, relevant_ids_per_query, k):
+    # TODO: average over queries the fraction of relevant ids found in the top-k retrieved ids
+    return sum([len(set(ret[:k])&set(rel))/len(rel) for ret, rel in zip(retrieved_ids_per_query, relevant_ids_per_query) if len(rel) > 0])/len(retrieved_ids_per_query)
+
