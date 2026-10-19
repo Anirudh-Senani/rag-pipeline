@@ -645,3 +645,19 @@ def handle_no_context(scored_chunks, threshold=0.2):
     else:
         return {'abstain' : False, 'message' : ''}
 
+# Step 48 - deduplicate_chunks
+import numpy as np
+
+def deduplicate_chunks(chunks, embeddings, similarity_threshold=0.95):
+    """Drop near-duplicate chunks based on cosine similarity, keeping the first one."""
+    # TODO: keep each chunk only if it is not too similar to any already-kept chunk
+    if not chunks:
+        return [], np.empty((0,0))
+
+    ssim = embeddings @ embeddings.T
+    ssim = np.tril(ssim, k=-1)
+    inds = np.arange(ssim.shape[0])[np.all(ssim < similarity_threshold, axis=-1)]
+
+    survived_embs = embeddings[inds]
+    return [chunks[i] for i in inds.tolist()], survived_embs
+
